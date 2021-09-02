@@ -48,5 +48,5 @@ class MLP(nn.Module):
     def add_to_argparse(parser):
         parser.add_argument("--fc1", type=int, default=1024)
         parser.add_argument("--fc2", type=int, default=128)
-        parser.add_argument("--do", type=int, default=0.5)
+        parser.add_argument("--do", type=float, default=0.5)
         return parser
