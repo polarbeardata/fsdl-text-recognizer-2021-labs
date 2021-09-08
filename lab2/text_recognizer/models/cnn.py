@@ -16,25 +16,10 @@ class ConvBlock(nn.Module):
     Simple 3x3 conv with padding size 1 (to leave the input size unchanged), followed by a ReLU.
     """
 
-    def __init__(self, input_channels: int, output_channels: int, stride=1) -> None:
+    def __init__(self, input_channels: int, output_channels: int) -> None:
         super().__init__()
-        #self.conv = nn.Conv2d(input_channels, output_channels, kernel_size=3, stride=1, padding=1)
-        #self.relu = nn.ReLU()
-        self.skip = nn.Sequential()
-
-        if stride != 1 or input_channels!= output_channels:
-          self.skip = nn.Sequential(
-            nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=1, stride=stride, bias=False),
-            nn.BatchNorm2d(output_channels))
-        else:
-          self.skip = None
-
-        self.block = nn.Sequential(
-            nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=3, padding=1, stride=1, bias=False),
-            nn.BatchNorm2d(output_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=3, padding=1, stride=1, bias=False),
-            nn.BatchNorm2d(output_channels))
+        self.conv = nn.Conv2d(input_channels, output_channels, kernel_size=3, stride=1, padding=1)
+        self.relu = nn.ReLU()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -48,11 +33,8 @@ class ConvBlock(nn.Module):
         torch.Tensor
             of dimensions (B, C, H, W)
         """
-        # c = self.conv(x)
-        # r = self.relu(c)
-        out = self.block(x)
-        out += (x if self.skip is None else self.skip(x))
-        r = F.relu(out)
+        c = self.conv(x)
+        r = self.relu(c)
         return r
 
 
