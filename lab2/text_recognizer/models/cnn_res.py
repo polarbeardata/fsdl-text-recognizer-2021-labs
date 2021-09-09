@@ -57,7 +57,7 @@ class ResBlock(nn.Module):
         return r
 
 
-class CNN(nn.Module):
+class CNN_RES(nn.Module):
     """Simple CNN for recognizing characters in a square image."""
 
     def __init__(self, data_config: Dict[str, Any], args: argparse.Namespace = None) -> None:
